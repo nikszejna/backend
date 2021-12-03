@@ -9,6 +9,7 @@ from rest_framework import status
 from django.http.response import JsonResponse
 from .sentiment_analysis import  getSentimentLabel, get_sentiment_barchart_bytes
 from .get_comments import get_comments
+from .query_utils import extract_videoid
 
 import re
  
@@ -47,12 +48,6 @@ def get_video_sentiment_chart(request):
             return JsonResponse({"error":"videoid required"}, status=status.HTTP_400_BAD_REQUEST)
     return JsonResponse({'started':True}, status=status.HTTP_200_OK) 
 
-def extract_videoid(url):
-    try:
-        id = re.search('^https://.*watch?\?v=(.*)$', url)
-        return id.group(1)
-    except:
-        return  url
 
 
 
