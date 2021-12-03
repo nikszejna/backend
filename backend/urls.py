@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include               
 from rest_framework import routers                 
-from todo import views                             
+from dashboard import views 
+from django.conf.urls import url                             
 
 router = routers.DefaultRouter()                   
-router.register(r'todos', views.TodoView, 'todo')  
+router.register(r'dashboards', views.DashboardView, 'dashboard')  
+router.register(r'comments', views.CommentView, 'comments')  
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls))             
+    path('api/', include(router.urls)), 
+    url(r'^api/getcomments$', views.start_comment_retrieval), 
+    url(r'^api/getsentimentchart$', views.get_video_sentiment_chart),              
 ]
