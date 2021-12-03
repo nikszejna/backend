@@ -41,11 +41,8 @@ def dictToDF(dict):
 
 def get_positive_negative_count(videoId,negative_threshold = -.05 ,positive_threshold = .05):
     comments_for_videoid = getCommentRecordsByVideoId(videoId)
-    print(videoId)
-    print(CommentRecord.objects.filter(videoid=videoId).count())
     positive_count = CommentRecord.objects.filter(videoid=videoId, sentimentscore__gt=positive_threshold).count()
     negative_count = CommentRecord.objects.filter(videoid=videoId,sentimentscore__lt=negative_threshold).count()
-    print(positive_count,negative_count)
     result = {
         'Positive' : positive_count,
         'Negative' : negative_count
@@ -55,13 +52,13 @@ def get_positive_negative_count(videoId,negative_threshold = -.05 ,positive_thre
 
 def get_sentiment_barchart(videoId):
     pos_neg_df_labels = dictToDF(get_positive_negative_count(videoId))
-    print(pos_neg_df_labels)
     chartTitle = 'Positive VS. Negative Comments for ' + videoId
     result_barchart = pos_neg_df_labels.plot.bar(
         title=chartTitle,
         color=['green','red'],
         rot=0,
-        ylabel="Comment Count"
+        ylabel="Comment Count",
+        xlabel="Sentiment"
     )
     return result_barchart
 

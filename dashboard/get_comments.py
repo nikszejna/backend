@@ -70,7 +70,7 @@ def commentsearch(youtube,videoIdentification, partofcomment = "snippet", numbro
             
             result_set_to_dict() # this will cll result_set_to_dict()
             
-        print(len(totallist))
+        #print(len(totallist))
         
                 
         

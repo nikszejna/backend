@@ -7,16 +7,10 @@ from .models import CommentRecord
 from rest_framework.decorators import api_view            
 from rest_framework import status 
 from django.http.response import JsonResponse
-import nltk
 from .sentiment_analysis import  getSentimentLabel, get_sentiment_barchart_bytes
 from .get_comments import get_comments
 
-
-import pandas as pd
-import io
-import matplotlib.pyplot as plt
-import base64
-import sqlite3
+import re
  
 
 
@@ -35,6 +29,7 @@ def start_comment_retrieval(request):
     if request.method == 'GET':
         videoId = request.query_params.get('videoid', None)
         if videoId is not None:
+            videoId = extract_videoid(videoId)
             get_comments(videoId)
         else:
             return JsonResponse({"error":"videoid required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -45,11 +40,19 @@ def get_video_sentiment_chart(request):
     if request.method == 'GET':
         videoId = request.query_params.get('videoid', None)
         if videoId is not None:
+            videoId = extract_videoid(videoId)
             barchart_bytes = get_sentiment_barchart_bytes(videoId)
             return HttpResponse(barchart_bytes, content_type="image/png")
         else:
             return JsonResponse({"error":"videoid required"}, status=status.HTTP_400_BAD_REQUEST)
     return JsonResponse({'started':True}, status=status.HTTP_200_OK) 
+
+def extract_videoid(url):
+    try:
+        id = re.search('^https://.*watch?\?v=(.*)$', url)
+        return id.group(1)
+    except:
+        return  url
 
 
 
