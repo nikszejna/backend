@@ -14,18 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include               
-from rest_framework import routers                 
-from dashboard import views 
-from django.conf.urls import url                             
+from django.urls import path, include
+from rest_framework import routers
+from dashboard import views
+from django.conf.urls import url
 
-router = routers.DefaultRouter()                   
-router.register(r'dashboards', views.DashboardView, 'dashboard')  
-router.register(r'comments', views.CommentView, 'comments')  
+router = routers.DefaultRouter()
+router.register(r"dashboards", views.DashboardView, "dashboard")
+router.register(r"comments", views.CommentView, "comments")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)), 
-    url(r'^api/getcomments$', views.start_comment_retrieval), 
-    url(r'^api/getsentimentchart$', views.get_video_sentiment_chart),              
+    path("admin/", admin.site.urls),
+    path("api/", include(router.urls)),
+    url(r"^api/getcomments$", views.start_comment_retrieval),
+    url(r"^api/getsentimentchart$", views.get_video_sentiment_chart),
+    url(r"^api/gettopnchart$", views.get_video_topn_chart),
 ]
